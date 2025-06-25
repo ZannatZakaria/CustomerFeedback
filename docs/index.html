@@ -88,6 +88,16 @@
     <ul id="favoritesList"></ul>
   </section>
 
+  <section>
+    <h2>We Value Your Feedback</h2>
+    <div class="input-group">
+      <label for="feedback">Your Comment:</label><br />
+      <textarea id="feedback" rows="4" style="width:100%"></textarea><br />
+      <button onclick="submitFeedback()">Submit Feedback</button>
+    </div>
+    <div id="feedbackMessage"></div>
+  </section>
+
   <footer>
     <button onclick="clearData()">Clear All Data</button>
   </footer>
@@ -125,11 +135,28 @@
       });
     }
 
+    function submitFeedback() {
+      const feedback = document.getElementById("feedback").value.trim();
+      if (feedback === "") {
+        alert("Please write something before submitting.");
+        return;
+      }
+
+      let feedbackList = JSON.parse(localStorage.getItem("feedbackList") || "[]");
+      feedbackList.push({ comment: feedback, date: new Date().toLocaleString() });
+      localStorage.setItem("feedbackList", JSON.stringify(feedbackList));
+
+      document.getElementById("feedback").value = "";
+      document.getElementById("feedbackMessage").textContent = "Thank you for your feedback!";
+    }
+
     function clearData() {
       localStorage.clear();
       updateGreeting();
       displayFavorites();
-      document.getElementById('name').value = '';
+      document.getElementById("name").value = "";
+      document.getElementById("feedback").value = "";
+      document.getElementById("feedbackMessage").textContent = "";
     }
 
     window.onload = function () {
