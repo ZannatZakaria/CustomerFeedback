@@ -1,126 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>EuroAsia Loyalty App</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f9f9f9; color: #333; }
-    header, section, footer { padding: 20px; max-width: 800px; margin: auto; }
-    h1, h2 { color: #006600; }
-    .input-group { margin: 10px 0; }
-    .product { display: flex; justify-content: space-between; margin: 10px 0; padding: 10px; background: #fff; border: 1px solid #ccc; }
-    .favorite-list { background: #e6ffe6; padding: 10px; margin-top: 20px; }
-    .feedback-section { background: #f0f8ff; padding: 10px; margin: 20px 0; }
-    button { background: #006600; color: white; border: none; padding: 8px 12px; cursor: pointer; }
-    button:hover { background: #004d00; }
-    @media(max-width: 600px) { body { font-size: 16px; } }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>EuroAsia Loyalty App</title>
+<style>
+body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f9f9f9; color: #333; }
+header, section, footer { padding: 20px; max-width: 800px; margin: auto; }
+h1, h2 { color: #006600; }
+.input-group { margin: 10px 0; }
+.product { display: flex; justify-content: space-between; padding: 10px; background: #fff; border: 1px solid #ccc; margin: 10px 0; }
+.favorite-list, .feedback-section { padding: 10px; margin: 20px 0; }
+button { background: #006600; color: #fff; border: none; padding: 8px 12px; cursor: pointer; }
+button:hover { background: #004d00; }
+</style>
 </head>
 <body>
-  <header>
-    <h1>EuroAsia Grocery Loyalty</h1>
-    <div class="input-group">
-      <label for="name">Your Name:</label>
-      <input type="text" id="name" />
-      <button onclick="saveName()">Save</button>
-    </div>
-    <p id="greeting"></p>
-  </header>
-
-  <section>
-    <h2>This Week's Offers</h2>
-    <p>✔ 10% off all Basmati rice varieties<br>✔ Free delivery over €40<br>✔ Loyalty bonus for frequent buyers</p>
-  </section>
-
-  <section>
-    <h2>Favorite Products</h2>
-    <div class="product">
-      <span>Mustard Oil</span>
-      <button onclick="addFavorite('Mustard Oil')">Add to Favorites</button>
-    </div>
-    <div class="product">
-      <span>Green Chilli</span>
-      <button onclick="addFavorite('Green Chilli')">Add to Favorites</button>
-    </div>
-    <div class="product">
-      <span>Frozen Roti</span>
-      <button onclick="addFavorite('Frozen Roti')">Add to Favorites</button>
-    </div>
-  </section>
-
-  <section class="favorite-list">
-    <h2>Your Saved Favorites</h2>
-    <ul id="favoritesList"></ul>
-  </section>
-
-  <section class="feedback-section">
-    <h2>We Value Your Feedback</h2>
-    <div class="input-group">
-      <label for="feedback">Your Comment:</label><br />
-      <textarea id="feedback" rows="4" style="width:100%"></textarea><br />
-      <button onclick="submitFeedback()">Submit Feedback</button>
-    </div>
-    <div id="feedbackMessage"></div>
-  </section>
-
-  <footer>
-    <button onclick="clearData()">Clear All Data</button>
-  </footer>
-
-  <script>
-    function saveName() {
-      const name = document.getElementById('name').value;
-      localStorage.setItem('username', name);
-      updateGreeting();
-    }
-    function updateGreeting() {
-      const name = localStorage.getItem('username');
-      const greet = name ? `Welcome back, ${name}!` : 'Welcome!';
-      document.getElementById('greeting').textContent = greet;
-    }
-    function addFavorite(product) {
-      let favs = JSON.parse(localStorage.getItem('favorites') || '[]');
-      if (!favs.includes(product)) {
-        favs.push(product);
-        localStorage.setItem('favorites', JSON.stringify(favs));
-        displayFavorites();
-      }
-    }
-    function displayFavorites() {
-      const favs = JSON.parse(localStorage.getItem('favorites') || '[]');
-      const list = document.getElementById("favoritesList");
-      list.innerHTML = '';
-      favs.forEach(item => {
-        const li = document.createElement("li");
-        li.textContent = item;
-        list.appendChild(li);
-      });
-    }
-    function submitFeedback() {
-      const feedback = document.getElementById("feedback").value.trim();
-      if (feedback === "") {
-        alert("Please write something before submitting.");
-        return;
-      }
-      let feedbackList = JSON.parse(localStorage.getItem("feedbackList") || "[]");
-      feedbackList.push({ comment: feedback, date: new Date().toLocaleString() });
-      localStorage.setItem("feedbackList", JSON.stringify(feedbackList));
-      document.getElementById("feedback").value = "";
-      document.getElementById("feedbackMessage").textContent = "Thank you for your feedback!";
-    }
-    function clearData() {
-      localStorage.clear();
-      updateGreeting();
-      displayFavorites();
-      document.getElementById("name").value = "";
-      document.getElementById("feedback").value = "";
-      document.getElementById("feedbackMessage").textContent = "";
-    }
-    window.onload = function () {
-      updateGreeting();
-      displayFavorites();
-    };
-  </script>
+<header>
+<h1>EuroAsia Grocery Loyalty</h1>
+<div class="input-group">
+<label for="name">Your Name:</label>
+<input type="text" id="name" />
+<button onClick="saveName()">Save</button>
+</div>
+<p id="greeting"></p>
+</header>
+<section>
+<h2>Favorite Products</h2>
+<div class="product"><span>Mustard Oil</span> <button onClick="addFavorite('Mustard Oil')">Add</button></div>
+<div class="product"><span>Green Chilli</span> <button onClick="addFavorite('Green Chilli')">Add</button></div>
+<div class="product"><span>Frozen Roti</span> <button onClick="addFavorite('Frozen Roti')">Add</button></div>
+</section>
+<section class="favorite-list">
+<h2>Your Saved Favorites</h2>
+<ul id="favoritesList"></ul>
+</section>
+<section class="feedback-section">
+<h2>We Value Your Feedback</h2>
+<textarea id="feedback" rows="4" style="width:100%"></textarea><br />
+<button onClick="submitFeedback()">Submit Feedback</button>
+<div id="feedbackMessage"></div>
+</section>
+<footer>
+<button onClick="clearData()">Clear All Data</button>
+</footer>
+<script>
+function saveName() {
+const name = document.getElementById("name").value;
+localStorage.setItem("username", name);
+updateGreeting();
+}
+function updateGreeting() {
+const name = localStorage.getItem("username") || "Guest";
+const points = parseInt(localStorage.getItem("points") || "0");
+document.getElementById("greeting").textContent = `Welcome back, ${name}! You have ${points} loyalty points.`;
+}
+function addFavorite(product) {
+let favs = JSON.parse(localStorage.getItem("favorites") || "[]");
+if (!favs.includes(product)) {
+favs.push(product);
+localStorage.setItem("favorites", JSON.stringify(favs));
+updatePoints(5);
+displayFavorites();
+}
+}
+function displayFavorites() {
+const favs = JSON.parse(localStorage.getItem("favorites") || "[]");
+const list = document.getElementById("favoritesList");
+list.innerHTML = "";
+favs.forEach(item => {
+const li = document.createElement("li");
+li.textContent = item;
+list.appendChild(li);
+});
+}
+function submitFeedback() {
+const feedback = document.getElementById("feedback").value.trim();
+if (!feedback) {
+alert("Please write something before submitting.");
+return;
+}
+let feedbackList = JSON.parse(localStorage.getItem("feedbackList") || "[]");
+feedbackList.push({ comment: feedback, date: new Date().toLocaleString() });
+localStorage.setItem("feedbackList", JSON.stringify(feedbackList));
+updatePoints(10);
+document.getElementById("feedback").value = "";
+document.getElementById("feedbackMessage").textContent = "Thank you for your feedback!";
+}
+function updatePoints(value) {
+let points = parseInt(localStorage.getItem("points") || "0") + value;
+localStorage.setItem("points", points);
+updateGreeting();
+}
+function clearData() {
+localStorage.clear();
+updateGreeting();
+displayFavorites();
+document.getElementById("name").value = "";
+document.getElementById("feedback").value = "";
+document.getElementById("feedbackMessage").textContent = "";
+}
+window.onload = function() {
+updateGreeting();
+displayFavorites();
+};
+</script>
 </body>
 </html>
