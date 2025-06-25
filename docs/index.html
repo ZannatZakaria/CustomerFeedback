@@ -10,10 +10,11 @@ header, section, footer { padding: 20px; max-width: 800px; margin: auto; }
 h1, h2 { color: #006600; }
 .input-group { margin: 10px 0; }
 .product { display: flex; justify-content: space-between; padding: 10px; background: #fff; border: 1px solid #ccc; margin: 10px 0; }
-.favorite-list, .feedback-section { padding: 10px; margin: 20px 0; }
+.favorite-list, .feedback-section, .weekly-offer { padding: 10px; margin: 20px 0; }
 button { background: #006600; color: #fff; border: none; padding: 8px 12px; cursor: pointer; }
 button:hover { background: #004d00; }
 #dateTime { font-weight: bold; margin-bottom: 10px; }
+.weekly-offer { background: #e6f7e6; border: 1px solid #c6e6c6; }
 </style>
 </head>
 <body>
@@ -40,6 +41,12 @@ button:hover { background: #004d00; }
 <ul id="favoritesList"></ul>
 </section>
 
+<section class="weekly-offer">
+<h2>Weekly Offer</h2>
+<div id="weeklyOfferTitle"></div>
+<div id="weeklyOfferDescription"></div>
+</section>
+
 <section class="feedback-section">
 <h2>We Value Your Feedback</h2>
 <textarea id="feedback" rows="4" style="width:100%"></textarea><br/>
@@ -52,6 +59,33 @@ button:hover { background: #004d00; }
 </footer>
 
 <script>
+// Weekly Offer Data (this can be updated weekly)
+const weeklyOffers = [
+  { title: "Buy 1 Get 1 Free on Mustard Oil", description: "Get a free bottle of Mustard Oil with every purchase of one bottle this week only!" },
+  { title: "Discount on Green Chilli", description: "20% off on Green Chilli for the whole week!" },
+  { title: "Frozen Roti Sale", description: "Get 2 packs of Frozen Roti for the price of 1 this week!" }
+];
+
+// Function to get the weekly offer
+function getWeeklyOffer() {
+  const currentWeek = new Date().getWeek();
+  const offer = weeklyOffers[currentWeek % weeklyOffers.length];  // Rotates weekly
+  document.getElementById("weeklyOfferTitle").textContent = offer.title;
+  document.getElementById("weeklyOfferDescription").textContent = offer.description;
+}
+
+// Date function to get the current week number (used for rotating the offers)
+Date.prototype.getWeek = function() {
+  var date = new Date(this.getFullYear(), this.getMonth(), this.getDate());
+  var dayNr = (this.getDay() + 6) % 7; // Adjusting the day to start from Sunday
+  date.setDate(date.getDate() - dayNr + 3); // Set to Thursday to get correct week number
+  var firstThursday = date.valueOf();
+  date.setMonth(0, 1); // Set to 1st January
+  var diff = date.valueOf() - firstThursday;
+  var weekNumber = Math.ceil((diff / 86400000 + 1) / 7);  // 86400000 ms in a day
+  return weekNumber;
+};
+
 function saveName() {
   const name = document.getElementById("name").value.trim();
   if (!name) return;
@@ -115,6 +149,7 @@ function showDateTime() {
 window.onload = function() {
   updateGreeting();
   displayFavorites();
+  getWeeklyOffer();  // Load the weekly offer on startup
   showDateTime();
 };
 setInterval(showDateTime, 1000);
