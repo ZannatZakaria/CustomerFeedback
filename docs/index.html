@@ -1,158 +1,297 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>EuroAsia Loyalty App</title>
-<style>
-body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f9f9f9; color: #333; }
-header, section, footer { padding: 20px; max-width: 800px; margin: auto; }
-h1, h2 { color: #006600; }
-.input-group { margin: 10px 0; }
-.product { display: flex; justify-content: space-between; padding: 10px; background: #fff; border: 1px solid #ccc; margin: 10px 0; }
-.favorite-list, .feedback-section, .weekly-offer { padding: 10px; margin: 20px 0; }
-button { background: #006600; color: #fff; border: none; padding: 8px 12px; cursor: pointer; }
-button:hover { background: #004d00; }
-#dateTime { font-weight: bold; margin-bottom: 10px; }
-.weekly-offer { background: #e6f7e6; border: 1px solid #c6e6c6; }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EuroAsia Grocery Loyalty</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f3f4f6;
+      color: #333;
+    }
+
+    header {
+      background: linear-gradient(to right, #10b981, #059669);
+      padding: 30px 20px;
+      color: white;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2em;
+    }
+
+    #dateTime {
+      margin-top: 5px;
+      font-size: 0.9em;
+      opacity: 0.8;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    section {
+      margin: 30px 0;
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    h2 {
+      color: #059669;
+      margin-top: 0;
+    }
+
+    .input-group input {
+      padding: 10px;
+      width: 200px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-right: 10px;
+    }
+
+    button {
+      background: #059669;
+      color: white;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #047857;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+    }
+
+    .card {
+      background: #f9fafb;
+      padding: 15px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .favorites-list ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .favorites-list li {
+      padding: 5px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    textarea {
+      width: 100%;
+      height: 80px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      font-family: inherit;
+    }
+
+    .progress-bar {
+      height: 20px;
+      background: #d1fae5;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: #10b981;
+      width: 0%;
+      transition: width 0.5s ease-in-out;
+    }
+
+    .offer-box {
+      background: #ecfdf5;
+      border-left: 4px solid #10b981;
+      padding: 10px 15px;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+
+    footer {
+      text-align: center;
+      margin: 30px 0;
+      font-size: 0.9em;
+    }
+  </style>
 </head>
 <body>
-<header>
-<h1>EuroAsia Grocery Loyalty</h1>
-<div id="dateTime"></div>
-<div class="input-group">
-<label for="name">Your Name:</label>
-<input type="text" id="name" />
-<button onClick="saveName()">Save</button>
-</div>
-<p id="greeting"></p>
-</header>
+  <header>
+    <h1>EuroAsia Grocery Loyalty Program</h1>
+    <div id="dateTime"></div>
+  </header>
 
-<section>
-<h2>Favorite Products</h2>
-<div class="product"><span>Mustard Oil</span> <button onClick="addFavorite('Mustard Oil')">Add</button></div>
-<div class="product"><span>Green Chilli</span> <button onClick="addFavorite('Green Chilli')">Add</button></div>
-<div class="product"><span>Frozen Roti</span> <button onClick="addFavorite('Frozen Roti')">Add</button></div>
-</section>
+  <main>
+    <section>
+      <h2>Welcome</h2>
+      <div class="input-group">
+        <input type="text" id="name" placeholder="Enter your name" />
+        <button onclick="saveName()">Save</button>
+      </div>
+      <p id="greeting"></p>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </section>
 
-<section class="favorite-list">
-<h2>Your Saved Favorites</h2>
-<ul id="favoritesList"></ul>
-</section>
+    <section>
+      <h2>Weekly Offer</h2>
+      <div class="offer-box">
+        <strong id="weeklyOfferTitle"></strong>
+        <p id="weeklyOfferDescription"></p>
+      </div>
+    </section>
 
-<section class="weekly-offer">
-<h2>Weekly Offer</h2>
-<div id="weeklyOfferTitle"></div>
-<div id="weeklyOfferDescription"></div>
-</section>
+    <section>
+      <h2>Shop Favorite Products</h2>
+      <div class="product-grid">
+        <div class="card"><span>Mustard Oil</span><button onclick="addFavorite('Mustard Oil')">Add</button></div>
+        <div class="card"><span>Green Chilli</span><button onclick="addFavorite('Green Chilli')">Add</button></div>
+        <div class="card"><span>Frozen Roti</span><button onclick="addFavorite('Frozen Roti')">Add</button></div>
+        <div class="card"><span>Basmati Rice</span><button onclick="addFavorite('Basmati Rice')">Add</button></div>
+      </div>
+    </section>
 
-<section class="feedback-section">
-<h2>We Value Your Feedback</h2>
-<textarea id="feedback" rows="4" style="width:100%"></textarea><br/>
-<button onClick="submitFeedback()">Submit Feedback</button>
-<div id="feedbackMessage"></div>
-</section>
+    <section class="favorites-list">
+      <h2>Your Favorites</h2>
+      <ul id="favoritesList"></ul>
+    </section>
 
-<footer>
-<button onClick="clearData()">Clear All Data</button>
-</footer>
+    <section>
+      <h2>Share Feedback</h2>
+      <textarea id="feedback"></textarea><br><br>
+      <button onclick="submitFeedback()">Submit</button>
+      <p id="feedbackMessage"></p>
+    </section>
 
-<script>
-// Weekly Offer Data (this can be updated weekly)
-const weeklyOffers = [
-  { title: "Buy 1 Get 1 Free on Mustard Oil", description: "Get a free bottle of Mustard Oil with every purchase of one bottle this week only!" },
-  { title: "Discount on Green Chilli", description: "20% off on Green Chilli for the whole week!" },
-  { title: "Frozen Roti Sale", description: "Get 2 packs of Frozen Roti for the price of 1 this week!" }
-];
+    <footer>
+      <button onclick="clearData()">Clear All Data</button><br><br>
+      &copy; 2025 EuroAsia Grocery Store
+    </footer>
+  </main>
 
-// Function to get the weekly offer
-function getWeeklyOffer() {
-  const currentWeek = new Date().getWeek();
-  const offer = weeklyOffers[currentWeek % weeklyOffers.length];  // Rotates weekly
-  document.getElementById("weeklyOfferTitle").textContent = offer.title;
-  document.getElementById("weeklyOfferDescription").textContent = offer.description;
-}
+  <script>
+    const weeklyOffers = [
+      { title: "Buy 1 Get 1 Mustard Oil", description: "Only this week - Double your value!" },
+      { title: "20% Off Green Chilli", description: "Spice up your meals with this hot offer!" },
+      { title: "Frozen Roti Bundle", description: "Get 2 packs for the price of 1!" },
+      { title: "Free Basmati Rice with Orders Over €50", description: "Add a touch of tradition to your meals!" }
+    ];
 
-// Date function to get the current week number (used for rotating the offers)
-Date.prototype.getWeek = function() {
-  var date = new Date(this.getFullYear(), this.getMonth(), this.getDate());
-  var dayNr = (this.getDay() + 6) % 7; // Adjusting the day to start from Sunday
-  date.setDate(date.getDate() - dayNr + 3); // Set to Thursday to get correct week number
-  var firstThursday = date.valueOf();
-  date.setMonth(0, 1); // Set to 1st January
-  var diff = date.valueOf() - firstThursday;
-  var weekNumber = Math.ceil((diff / 86400000 + 1) / 7);  // 86400000 ms in a day
-  return weekNumber;
-};
+    Date.prototype.getWeek = function() {
+      var date = new Date(this.getFullYear(), this.getMonth(), this.getDate());
+      var dayNr = (this.getDay() + 6) % 7;
+      date.setDate(date.getDate() - dayNr + 3);
+      var firstThursday = date.valueOf();
+      date.setMonth(0, 1);
+      var diff = firstThursday - date.valueOf();
+      return Math.ceil(diff / (7 * 24 * 60 * 60 * 1000));
+    };
 
-function saveName() {
-  const name = document.getElementById("name").value.trim();
-  if (!name) return;
-  localStorage.setItem("username", name);
-  updateGreeting();
-}
-function updateGreeting() {
-  const name = localStorage.getItem("username") || "Guest";
-  const points = parseInt(localStorage.getItem("points") || "0");
-  document.getElementById("greeting").textContent = `Welcome back, ${name}! You have ${points} loyalty points.`;
-}
-function addFavorite(product) {
-  let favs = JSON.parse(localStorage.getItem("favorites") || "[]");
-  if (!favs.includes(product)) {
-    favs.push(product);
-    localStorage.setItem("favorites", JSON.stringify(favs));
-    updatePoints(5);
-    displayFavorites();
-  }
-}
-function displayFavorites() {
-  const favs = JSON.parse(localStorage.getItem("favorites") || "[]");
-  const list = document.getElementById("favoritesList");
-  list.innerHTML = "";  
-  favs.forEach(item => {
-    const li = document.createElement("li");
-    li.textContent = item;
-    list.appendChild(li);
-  });
-}
-function submitFeedback() {
-  const feedback = document.getElementById("feedback").value.trim();
-  if (!feedback) {
-    alert("Please write something before submitting.");
-    return;
-  }
-  let feedbackList = JSON.parse(localStorage.getItem("feedbackList") || "[]");
-  feedbackList.push({ comment: feedback, date: new Date().toLocaleString() });
-  localStorage.setItem("feedbackList", JSON.stringify(feedbackList));
-  updatePoints(10);
-  document.getElementById("feedback").value = ""; 
-  document.getElementById("feedbackMessage").textContent = "Thank you for your feedback!";
-}
-function updatePoints(value) {
-  let points = parseInt(localStorage.getItem("points") || "0") + value;
-  localStorage.setItem("points", points);
-  updateGreeting();
-}
-function clearData() {
-  localStorage.clear();
-  updateGreeting();
-  displayFavorites();
-  document.getElementById("name").value = ""; 
-  document.getElementById("feedback").value = ""; 
-  document.getElementById("feedbackMessage").textContent = ""; 
-}
-function showDateTime() {
-  const now = new Date();
-  document.getElementById("dateTime").textContent = now.toLocaleString();
-}
-window.onload = function() {
-  updateGreeting();
-  displayFavorites();
-  getWeeklyOffer();  // Load the weekly offer on startup
-  showDateTime();
-};
-setInterval(showDateTime, 1000);
-</script>
+    function getWeeklyOffer() {
+      const week = new Date().getWeek();
+      const offer = weeklyOffers[week % weeklyOffers.length];
+      document.getElementById("weeklyOfferTitle").textContent = offer.title;
+      document.getElementById("weeklyOfferDescription").textContent = offer.description;
+    }
+
+    function saveName() {
+      const name = document.getElementById("name").value.trim();
+      if (!name) return;
+      localStorage.setItem("username", name);
+      updateGreeting();
+    }
+
+    function updateGreeting() {
+      const name = localStorage.getItem("username") || "Guest";
+      const points = parseInt(localStorage.getItem("points") || "0");
+      document.getElementById("greeting").textContent = `Hello, ${name}! You have ${points} loyalty points.`;
+      document.getElementById("progressFill").style.width = Math.min(points, 100) + "%";
+    }
+
+    function addFavorite(product) {
+      let favs = JSON.parse(localStorage.getItem("favorites") || "[]");
+      if (!favs.includes(product)) {
+        favs.push(product);
+        localStorage.setItem("favorites", JSON.stringify(favs));
+        updatePoints(5);
+        displayFavorites();
+      }
+    }
+
+    function displayFavorites() {
+      const favs = JSON.parse(localStorage.getItem("favorites") || "[]");
+      const list = document.getElementById("favoritesList");
+      list.innerHTML = "";
+      favs.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        list.appendChild(li);
+      });
+    }
+
+    function submitFeedback() {
+      const feedback = document.getElementById("feedback").value.trim();
+      if (!feedback) {
+        alert("Please write some feedback before submitting.");
+        return;
+      }
+      let feedbackList = JSON.parse(localStorage.getItem("feedbackList") || "[]");
+      feedbackList.push({ comment: feedback, date: new Date().toLocaleString() });
+      localStorage.setItem("feedbackList", JSON.stringify(feedbackList));
+      updatePoints(10);
+      document.getElementById("feedback").value = "";
+      document.getElementById("feedbackMessage").textContent = "Thanks for your feedback!";
+    }
+
+    function updatePoints(val) {
+      let points = parseInt(localStorage.getItem("points") || "0");
+      points += val;
+      localStorage.setItem("points", points);
+      updateGreeting();
+    }
+
+    function clearData() {
+      localStorage.clear();
+      updateGreeting();
+      displayFavorites();
+      document.getElementById("feedback").value = "";
+      document.getElementById("feedbackMessage").textContent = "";
+      document.getElementById("name").value = "";
+    }
+
+    function showDateTime() {
+      document.getElementById("dateTime").textContent = new Date().toLocaleString();
+    }
+
+    window.onload = () => {
+      updateGreeting();
+      displayFavorites();
+      getWeeklyOffer();
+      showDateTime();
+      setInterval(showDateTime, 1000);
+    };
+  </script>
 </body>
 </html>
